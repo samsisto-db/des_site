@@ -2,10 +2,15 @@
   <head>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.873.0.min.js"></script>
     <script src="./PhotoViewer.js"></script>
-    <script>listAlbums();</script>
+    <script>
+       function getHtml(template) {
+          return template.join('\n');
+       }
+       listAlbums();
+    </script>
   </head>
   <body>
-    <h1>Photo Album Viewer</h1>
-    <div id="viewer" />
+    <h1>My Photo Albums App</h1>
+    <div id="app"></div>
   </body>
 </html>

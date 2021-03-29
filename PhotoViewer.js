@@ -17,11 +17,6 @@ var s3 = new AWS.S3({
   params: {Bucket: albumBucketName}
 });
 
-// A utility function to create HTML.
-function getHtml(template) {
-  return template.join('\n');
-}
-
 
 //
 // Functions
@@ -29,34 +24,39 @@ function getHtml(template) {
 
 // List the photo albums that exist in the bucket.
 function listAlbums() {
-  s3.listObjects({Delimiter: '/'}, function(err, data) {
+  s3.listObjects({ Delimiter: "/" }, function(err, data) {
     if (err) {
-      return alert('There was an error listing your albums: ' + err.message);
+      return alert("There was an error listing your albums: " + err.message);
     } else {
       var albums = data.CommonPrefixes.map(function(commonPrefix) {
         var prefix = commonPrefix.Prefix;
-        var albumName = decodeURIComponent(prefix.replace('/', ''));
+        var albumName = decodeURIComponent(prefix.replace("/", ""));
         return getHtml([
-          '<li>',
-            '<button style="margin:5px;" onclick="viewAlbum(\'' + albumName + '\')">',
-              albumName,
-            '</button>',
-          '</li>'
+          "<li>",
+          "<span onclick=\"deleteAlbum('" + albumName + "')\">X</span>",
+          "<span onclick=\"viewAlbum('" + albumName + "')\">",
+          albumName,
+          "</span>",
+          "</li>"
         ]);
       });
-      var message = albums.length ?
-        getHtml([
-          '<p>Click on an album name to view it.</p>',
-        ]) :
-        '<p>You do not have any albums. Please Create album.';
+      var message = albums.length
+        ? getHtml([
+            "<p>Click on an album name to view it.</p>",
+            "<p>Click on the X to delete the album.</p>"
+          ])
+        : "<p>You do not have any albums. Please Create album.";
       var htmlTemplate = [
-        '<h2>Albums</h2>',
+        "<h2>Albums</h2>",
         message,
-        '<ul>',
-          getHtml(albums),
-        '</ul>',
-      ]
-      document.getElementById('viewer').innerHTML = getHtml(htmlTemplate);
+        "<ul>",
+        getHtml(albums),
+        "</ul>",
+        "<button onclick=\"createAlbum(prompt('Enter Album Name:'))\">",
+        "Create New Album",
+        "</button>"
+      ];
+      document.getElementById("app").innerHTML = getHtml(htmlTemplate);
     }
   });
 }
@@ -106,28 +106,55 @@ function viewAlbum(albumName) {
       '<p>The following photos are present.</p>' :
       '<p>There are no photos in this album.</p>';
     var htmlTemplate = [
-      '<div>',
-        '<button onclick="listAlbums()">',
-          'Back To Albums',
-        '</button>',
-      '</div>',
-      '<h2>',
-        'Album: ' + albumName,
-      '</h2>',
+      "<h2>",
+      "Album: " + albumName,
+      "</h2>",
       message,
-      '<div>',
-        getHtml(photos),
-      '</div>',
-      '<h2>',
-        'End of Album: ' + albumName,
-      '</h2>',
-      '<div>',
-        '<button onclick="listAlbums()">',
-          'Back To Albums',
-        '</button>',
-      '</div>',
-    ]
+      "<div>",
+      getHtml(photos),
+      "</div>",
+      '<input id="photoupload" type="file" accept="image/*">',
+      '<button id="addphoto" onclick="addPhoto(\'' + albumName + "')\">",
+      "Add Photo",
+      "</button>",
+      '<button onclick="listAlbums()">',
+      "Back To Albums",
+      "</button>"
+    ];
     document.getElementById('viewer').innerHTML = getHtml(htmlTemplate);
-    document.getElementsByTagName('img')[0].setAttribute('style', 'display:none;');
+    //document.getElementsByTagName('img')[0].setAttribute('style', 'display:none;');
   });
+}
+
+function addPhoto(albumName) {
+  var files = document.getElementById("photoupload").files;
+  if (!files.length) {
+    return alert("Please choose a file to upload first.");
+  }
+  var file = files[0];
+  var fileName = file.name;
+  var albumPhotosKey = encodeURIComponent(albumName) + "/";
+
+  var photoKey = albumPhotosKey + fileName;
+
+  // Use S3 ManagedUpload class as it supports multipart uploads
+  var upload = new AWS.S3.ManagedUpload({
+    params: {
+      Bucket: albumBucketName,
+      Key: photoKey,
+      Body: file
+    }
+  });
+
+  var promise = upload.promise();
+
+  promise.then(
+    function(data) {
+      alert("Successfully uploaded photo.");
+      viewAlbum(albumName);
+    },
+    function(err) {
+      return alert("There was an error uploading your photo: ", err.message);
+    }
+  );
 }
