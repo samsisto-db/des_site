@@ -1,6 +1,7 @@
 //
 // Data constructs and initialization.
 //
+// Adding comment to test commit and test out CI/CD pipeline
 
 var albumBucketName = 'don-sisto-photos';
 
