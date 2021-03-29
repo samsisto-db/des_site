@@ -42,7 +42,6 @@ function listAlbums() {
       var message = albums.length
         ? getHtml([
             "<p>Click on an album name to view it.</p>",
-            "<p>Click on the X to delete the album.</p>"
           ])
         : "<p>You do not have any albums. Please Create album.";
       var htmlTemplate = [
@@ -51,9 +50,6 @@ function listAlbums() {
         "<ul>",
         getHtml(albums),
         "</ul>",
-        "<button onclick=\"createAlbum(prompt('Enter Album Name:'))\">",
-        "Create New Album",
-        "</button>"
       ];
       document.getElementById("app").innerHTML = getHtml(htmlTemplate);
     }
