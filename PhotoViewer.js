@@ -33,7 +33,6 @@ function listAlbums() {
         var albumName = decodeURIComponent(prefix.replace("/", ""));
         return getHtml([
           "<li>",
-          "<span onclick=\"deleteAlbum('" + albumName + "')\">X</span>",
           "<span onclick=\"viewAlbum('" + albumName + "')\">",
           albumName,
           "</span>",
@@ -121,7 +120,7 @@ function viewAlbum(albumName) {
       "Back To Albums",
       "</button>"
     ];
-    document.getElementById('viewer').innerHTML = getHtml(htmlTemplate);
+    document.getElementById('app').innerHTML = getHtml(htmlTemplate);
     //document.getElementsByTagName('img')[0].setAttribute('style', 'display:none;');
   });
 }
