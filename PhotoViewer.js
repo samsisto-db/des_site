@@ -78,15 +78,12 @@ function viewAlbum(albumName) {
 				'box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);',
 			'}',
 			'</style>',
-			'<a target="_blank" href="' + photoUrl + '">',
-				'<img src="' + photoUrl + '"/>',
-			'</a>',
+			'<div class="gallery">',
+				'<a target="_blank" href="' + photoUrl + '">',
+					'<img src="' + photoUrl + '"/>',
+				'</a>',
+			'</div>',
           '</div>',
-/*           '<div>',
-            '<span>',
-              photoKey.replace(albumPhotosKey, ''),
-            '</span>',
-          '</div>', */
         '</span>',
       ]);
     });
