@@ -67,7 +67,6 @@ function viewAlbum(albumName) {
       return getHtml([
         '<span>',
           '<div>',
-            '<br/>',
 			'<style>',
 			'img {',
 				'border: 1px solid #ddd;',
@@ -83,11 +82,11 @@ function viewAlbum(albumName) {
 				'<img src="' + photoUrl + '"/>',
 			'</a>',
           '</div>',
-          '<div>',
+/*           '<div>',
             '<span>',
               photoKey.replace(albumPhotosKey, ''),
             '</span>',
-          '</div>',
+          '</div>', */
         '</span>',
       ]);
     });
@@ -106,6 +105,7 @@ function viewAlbum(albumName) {
       '<button id="addphoto" onclick="addPhoto(\'' + albumName + "')\">",
       "Add Photo",
       "</button>",
+	  '<br/>',
       '<button onclick="listAlbums()">',
       "Back To Albums",
       "</button>"
