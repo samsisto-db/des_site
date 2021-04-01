@@ -65,7 +65,21 @@ function viewAlbum(albumName) {
       var photoKey = photo.Key;
       var photoUrl = bucketUrl + encodeURIComponent(photoKey);
       return getHtml([
-        '<span>',
+		'<a target="_blank" href="' + photoUrl + '">',
+			'<img src="' + photoUrl + '"/>',
+		'</a>'
+      ]);
+    });
+    var message = photos.length ?
+      '<p>The following photos are present.</p>' :
+      '<p>There are no photos in this album.</p>';
+    var htmlTemplate = [
+      "<h2>",
+      "Album: " + albumName,
+      "</h2>",
+      message,
+      "<div>",
+	    '<span>',
           '<div>',
 			'<style>',
 			'img {',
@@ -79,24 +93,10 @@ function viewAlbum(albumName) {
 			'}',
 			'</style>',
 			'<div class="gallery">',
-				'<a target="_blank" href="' + photoUrl + '">',
-					'<img src="' + photoUrl + '"/>',
-				'</a>',
+				getHtml(photos),
 			'</div>',
           '</div>',
-        '</span>',
-      ]);
-    });
-    var message = photos.length ?
-      '<p>The following photos are present.</p>' :
-      '<p>There are no photos in this album.</p>';
-    var htmlTemplate = [
-      "<h2>",
-      "Album: " + albumName,
-      "</h2>",
-      message,
-      "<div>",
-      getHtml(photos),
+        '</span>'
       "</div>",
       '<input id="photoupload" type="file" accept="image/*">',
       '<button id="addphoto" onclick="addPhoto(\'' + albumName + "')\">",
