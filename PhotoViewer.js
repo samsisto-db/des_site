@@ -96,7 +96,7 @@ function viewAlbum(albumName) {
 				getHtml(photos),
 			'</div>',
           '</div>',
-        '</span>'
+        '</span>',
       "</div>",
       '<input id="photoupload" type="file" accept="image/*">',
       '<button id="addphoto" onclick="addPhoto(\'' + albumName + "')\">",
