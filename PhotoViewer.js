@@ -39,14 +39,8 @@ function listAlbums() {
           "</li>"
         ]);
       });
-      var message = albums.length
-        ? getHtml([
-            "<p>Click on an album name to view it.</p>",
-          ])
-        : "<p>You do not have any albums. Please Create album.";
       var htmlTemplate = [
         "<h2>Albums</h2>",
-        message,
         "<ul>",
         getHtml(albums),
         "</ul>",
@@ -117,7 +111,7 @@ function viewAlbum(albumName) {
       "</button>"
     ];
     document.getElementById('app').innerHTML = getHtml(htmlTemplate);
-    //document.getElementsByTagName('img')[0].setAttribute('style', 'display:none;');
+    document.getElementsByTagName('img')[0].setAttribute('style', 'display:none;');
   });
 }
 
